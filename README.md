@@ -285,7 +285,7 @@ Download the [Restaurant Orders](https://mavenanalytics.io/data-playground/resta
 
 Run:
 
-`schema.sql`.
+`create_restaurant_db.sql`.
 
 **3. Run the analysis**
 
@@ -293,14 +293,6 @@ Execute:
 
 `restaurant_analysis.sql`.
 
-
-## Repository Structure
-
-```
-├── README.md
-├── schema.sql
-└── restaurant_analysis.sql
-```
 
 ## Conclusion
 
