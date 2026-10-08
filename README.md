@@ -1,6 +1,5 @@
-# Restaurant Orders Analysis (SQL)
-
-SQL Data Analysis Project | Microsoft SQL Server
+# Restaurant Orders Analysis (SQL + Power BI)
+SQL and Power BI Project | Microsoft SQL Server
 
 An analysis of 5,370 restaurant orders from January to March 2023 to understand menu performance, customer ordering behavior, revenue trends, and peak ordering times.
 
