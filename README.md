@@ -11,7 +11,7 @@ The goal was to turn raw restaurant transaction data into actionable business in
 |---|---|---|---|---|
 | $159.2K | 5,370 | 12,097 | $29.80 | 2.3
 
-
+![Dashboard overview](Dashboard/dashboard_overview.png)
 
 **Analysis period:** January 1 – March 31, 2023
 **Menu:** 32 dishes across 4 categories
@@ -75,6 +75,7 @@ Data period: **1 January 2023 to 31 March 2023**
 - Microsoft SQL Server Management Studio (SSMS)
 - SQL
 - GitHub
+- Power BI Desktop
 
 ## SQL Skills Demonstrated
 
@@ -230,6 +231,42 @@ The restaurant offers 32 dishes across 4 categories
 
 **Insight:** Lunch (12:00-13:00) accounts for 23% of orders and dinner (17:00-19:00) for 32%. Orders after 22:00 are very rare. Monday is the busiest weekday with 885 orders, while Wednesday has the lowest demand with 682 orders.
 
+## Power BI Dashboard
+
+An interactive two-page dashboard built on the same data as the SQL analysis.
+
+![Overview](Dashboard/dashboard_overview.png)
+
+**Overview** shows revenue, orders, items sold and average order value, with revenue by month and category and the top 10 dishes by items sold and by revenue.
+
+![Time patterns](Dashboard/dashboard_time.png)
+
+**Time patterns** shows orders by hour and by weekday, plus a heatmap of hour × weekday. The busiest slot is Sunday at 13:00 with 116 orders.
+
+Month and category slicers filter both pages.
+
+### Data Model
+
+`menu_items` (one) is connected to `order_details` (many) through `menu_item_id` = `item_id`.
+
+### DAX Measures
+
+```
+Revenue = SUMX(order_details, RELATED(menu_items[price]))
+Orders = DISTINCTCOUNT(order_details[order_id])
+Items Sold = COUNT(order_details[item_id])
+Orders With Items =
+    CALCULATE(
+        DISTINCTCOUNT(order_details[order_id]),
+        FILTER(order_details, NOT(ISBLANK(order_details[item_id])))
+    )
+Avg Order Value = DIVIDE([Revenue], [Orders With Items])
+```
+
+Average order value uses only orders that contain at least one valid item.
+
+Files are in the `Dashboard/` folder: `restaurant_dashboard.pbix` (open with Power BI Desktop) and screenshots.
+
 ## Recommendations
 
 Based on the analysis, I would recommend four actions.
@@ -277,20 +314,10 @@ Monday may also require additional staffing because it has the highest weekly or
 
 ## How to Reproduce
 
-**1. Download the dataset**
-
-Download the [Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) from Maven Analytics Data Playground. 
-**2. Create the database tables**
-
-Run:
-
-`create_restaurant_db.sql`.
-
-**3. Run the analysis**
-
-Execute:
-
-`restaurant_analysis.sql`.
+1. Download the [Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) dataset from Maven Analytics Data Playground.
+2. Create the database tables by running `create_restaurant_db.sql`.
+3. Run the analysis in `restaurant_analysis.sql`.
+4. Open `Dashboard/restaurant_dashboard.pbix` in Power BI Desktop.
 
 
 ## Conclusion
@@ -301,8 +328,7 @@ Customer orders are generally small, with 83.5% containing 1–3 items, creating
 
 Demand is concentrated around lunch and dinner, particularly between 12:00–13:00 and 17:00–19:00, which provides a clear opportunity to optimize staffing.
 
-Overall, the analysis demonstrates how SQL can be used not only to retrieve data, but to identify business problems, quantify opportunities, and make data-driven recommendations.
-
+Together, the SQL analysis and the Power BI dashboard turn raw order data into clear recommendations on menu focus, order value and staffing.
 
 
 
