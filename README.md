@@ -8,7 +8,7 @@ The goal was to turn raw restaurant transaction data into actionable business in
 
 ## Project Snapshot
 
-| Total Revenue | Total Revenue | Items Sold | Avg. Order Value | Avg. Items / Order |
+| Total Revenue | Total Orders | Items Sold | Avg. Order Value | Avg. Items / Order |
 |---|---|---|---|---|
 | $159.2K | 5,370 | 12,097 | $29.80 | 2.3
 
@@ -129,8 +129,8 @@ The restaurant offers 32 dishes across 4 categories
 
 | category | item_name | revenue |
 |---|---|---|
-| American | Hamburger | XX |
 | American | Cheeseburger | 8,132.85 |
+| American | Hamburger | 8,054.90 |
 | American | French Fries | 3,997.00 |
 | Asian | Korean Beef Bowl | 10,554.60 |
 | Asian | Tofu Pad Thai | 8,149.00 |
@@ -303,6 +303,7 @@ Customer orders are generally small, with 83.5% containing 1–3 items, creating
 Demand is concentrated around lunch and dinner, particularly between 12:00–13:00 and 17:00–19:00, which provides a clear opportunity to optimize staffing.
 
 Overall, the analysis demonstrates how SQL can be used not only to retrieve data, but to identify business problems, quantify opportunities, and make data-driven recommendations.
+
 
 
 
