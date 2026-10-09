@@ -268,15 +268,19 @@ Average order value only counts orders that have at least one item.
 ## Recommendations
 
 **1. Promote Italian and Asian dishes**
+
 They bring in 60.4% of revenue. The restaurant could give them more space on the menu and push the best sellers: Korean Beef Bowl, Spaghetti & Meatballs and Tofu Pad Thai.
 
 **2. Look at weak dishes**
+
 Chicken Tacos had only 123 orders. The restaurant could try a new price, a new recipe, a better place on the menu or a special offer. If nothing helps, it could replace the dish.
 
 **3. Raise the average order value**
+
 Since 83.5% of orders have only 1–3 items, the restaurant could offer combo meals, main + side bundles, drinks and desserts.
 
 **4. Plan staff around busy times**
+
 Add more staff at 12:00–13:00 and 17:00–19:00. Monday may also need extra staff because it has the most orders.
 
 ## Project Structure
