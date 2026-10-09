@@ -1,214 +1,212 @@
 # Restaurant Orders Analysis (SQL + Power BI)
-SQL and Power BI Project | Microsoft SQL Server
-
-An analysis of 5,370 restaurant orders from January to March 2023 to understand menu performance, customer ordering behavior, revenue trends, and peak ordering times.
-
-The goal was to turn raw restaurant transaction data into actionable business insights that could help improve revenue, menu performance, and operational planning.
-
-## Project Snapshot
-
-| Total Revenue | Total Orders | Items Sold | Avg. Order Value | Avg. Items / Order |
-|---|---|---|---|---|
-| $159.2K | 5,370 | 12,097 | $29.80 | 2.3
+I analysed three months of restaurant orders (January–March 2023) to find out what sells best, when customers order, and where the restaurant could earn more. I used SQL Server to answer the questions and Power BI to build a two-page dashboard.
 
 ![Dashboard overview](Dashboard/dashboard_overview.png)
 
-**Analysis period:** January 1 – March 31, 2023
-**Menu:** 32 dishes across 4 categories
+## Contents
 
-## Key Findings
+- [The Problem](#the-problem)
+- [Key Findings](#key-findings)
+- [Quick Numbers](#quick-numbers)
+- [Dataset](#dataset)
+- [Tools](#tools)
+- [How I Built It](#how-i-built-it)
+- [Results](#results)
+- [Power BI Dashboard](#power-bi-dashboard)
+- [Challenges](#challenges)
+- [Recommendations](#recommendations)
+- [Project Structure](#project-structure)
+- [How to Run It](#how-to-run-it)
+- [Conclusion](#conclusion)
 
-**1. Italian and Asian dishes drive revenue**
+## The Problem
 
-Italian and Asian dishes generated 60.4% of total revenue, making them the restaurant's strongest revenue categories.
+A restaurant has a lot of order data, but a list of orders does not tell you much on its own. I wanted to answer questions that a restaurant manager might ask:
 
-**2. Most orders are relatively small**
-
-83.5% of orders contain only 1–3 items, with an average order containing approximately 2.3 items. This suggests an opportunity to increase order value through combos, sides, and add-ons.
-
-**3. Demand is concentrated around lunch and dinner**
-
-The busiest periods are 12:00–13:00 and 17:00–19:00, which together account for approximately 55% of all orders. 
-
-**4. Some dishes significantly outperform others**
-
-Hamburger (622 orders) and Edamame (620 orders) are the most frequently ordered dishes, while Chicken Tacos is by far the least ordered (123 orders).
-
-## Business Questions
-
-The analysis focuses on four areas:
-
-**Menu Performance**
-- Which dishes are ordered most frequently?
+**Menu**
+- Which dishes are ordered most often?
 - Which dishes generate the most revenue?
-- Which categories have the highest average prices?
 - Which menu items are underperforming?
 
-**Customer Ordering Behavior**
-- How many items do customers typically order?
-- What percentage of orders are small, medium, or large?
+**Orders**
+- How many items does a customer usually order?
 - Which orders have the highest total value?
 
-**Revenue Performance**
+**Revenue**
 - How much revenue does each category generate?
-- How does revenue change month over month?
-- Which month performed best?
+- How does revenue change from month to month?
 
-**Demand & Operations**
+**Time**
 - What are the busiest ordering hours?
 - Which weekdays have the highest demand?
-- When should staffing levels be increased?
+- When does the restaurant need more staff?
+
+## Key Findings
+- **Revenue:** The restaurant generated $159.2K in revenue. Italian and Asian dishes accounted for 60.4% of the total.
+- **Order size:** 83.5% of orders contained 1–3 items, with an average of 2.3 items per order.
+- **Popular dishes:** Hamburger and Edamame had the highest order counts, while Korean Beef Bowl generated the most revenue.
+- **Peak hours:** Demand was highest around lunch (12:00–13:00) and dinner (17:00–19:00).
+
+## Quick Numbers
+
+| Total Revenue | Total Orders | Items Sold | Avg. Order Value | Avg. Items per Order |
+|---|---|---|---|---|
+| $159.2K | 5,370 | 12,097 | $29.80 | 2.3 |
+
+**Period:** 1 January – 31 March 2023
+**Menu:** 32 dishes in 4 categories (American, Asian, Italian, Mexican)
 
 ## Dataset
 
-[Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) from Maven Analytics Data Playground. It contains two tables:
+[Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) from Maven Analytics. It has two tables:
 
-| Table | Description |
+| Table | What it contains |
 |---|---|
-| `menu_items` | Menu items with name, category and price |
-| `order_details` | Each ordered item with order ID, date and time |
-
-Data period: **1 January 2023 to 31 March 2023**
+| `menu_items` | Dish name, category and price |
+| `order_details` | One row per ordered item, with order ID, date and time |
 
 ## Tools
 
 - Microsoft SQL Server Management Studio (SSMS)
 - SQL
-- GitHub
 - Power BI Desktop
+- GitHub
 
-## SQL Skills Demonstrated
+## How I Built It
 
-- Filtering, sorting and aggregation: `WHERE`, `ORDER BY`, `GROUP BY`, `HAVING`, `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
-- Joins: `INNER JOIN`, `LEFT JOIN`
-- Subqueries and Common Table Expressions (CTEs)
-- Conditional logic: `CASE WHEN`
+**1. SQL analysis**
+
+I created the database and loaded both tables (`create_restaurant_db.sql`). Then I wrote the queries for each question (`restaurant_analysis.sql`). The queries use:
+
+- `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY` and aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`)
+- `INNER JOIN` and `LEFT JOIN`
+- Subqueries and CTEs
+- `CASE WHEN` (for example, to group orders into small, medium and large)
 - Window functions: `RANK()`, `LAG()`, `SUM() OVER()`
-- Date and time functions: `DATEPART`, `DATENAME`
+- `DATEPART` and `DATENAME` (to get the hour and weekday)
 
-## Analysis
+**2. Power BI dashboard**
 
-### 1. Menu Performance
+I loaded the same data into Power BI and connected the two tables. Then I wrote a few measures and built two report pages. More details are in the [dashboard section](#power-bi-dashboard).
 
-**Menu Overview**
 
-The restaurant offers 32 dishes across 4 categories
+## Results
 
-**Most and least expensive items**
+### 1. Menu
+
+**Most and least expensive items** 
 
 | item_name | price | type |
 |---|---|---|
 | Shrimp Scampi | 19.95 | most expensive |
 | Edamame | 5.00 | cheapest |
 
+The most expensive dish is Shrimp Scampi ($19.95). The cheapest is Edamame ($5.00).
 
 **Average price by category**
 
-| category | dishes | average_price |
+| Category | Dishes | Average price |
 |---|---|---|
-| American | 6 | 10.07 |
-| Asian | 8 | 13.48 |
-| Italian | 9 | 16.75 |
-| Mexican | 9 | 11.80 |
+| American | 6 | $10.07 |
+| Asian | 8 | $13.48 |
+| Italian | 9 | $16.75 |
+| Mexican | 9 | $11.80 |
 
-**Insight:** Italian dishes have the highest average price, while American dishes are the cheapest on average.
+Italian dishes have the highest average price, while American dishes are the cheapest on average.
 
 **Most and least ordered dishes**
 
-| item_name | category | order_count |
+| Dish | Category | Times ordered |
 |---|---|---|
 | Hamburger | American | 622 |
 | Edamame | Asian | 620 |
 | ... | ... | ... |
 | Chicken Tacos | Mexican | 123 |
 
-
-**Insight:** Edamame is the cheapest menu item at $5.00 but is also the second most ordered dish, suggesting strong customer demand for low-priced starters or sides. Chicken Tacos, with only 123 orders, is the weakest performer by order volume.
+Edamame is the cheapest menu item at $5.00 but is also the second most ordered dish, suggesting strong customer demand for low-priced starters or sides. Chicken Tacos, with only 123 orders, is the weakest performer by order volume.
 
 **Top 3 dishes by revenue in each category**
 
-| category | item_name | revenue |
+| Category | Dish | Revenue |
 |---|---|---|
-| American | Cheeseburger | 8,132.85 |
-| American | Hamburger | 8,054.90 |
-| American | French Fries | 3,997.00 |
-| Asian | Korean Beef Bowl | 10,554.60 |
-| Asian | Tofu Pad Thai | 8,149.00 |
-| Asian | Orange Chicken | 7,524.00 |
-| Italian | Spaghetti & Meatballs | 8,436.50 |
-| Italian | Eggplant Parmesan | 7,119.00 |
-| Italian | Chicken Parmesan | 6,533.80 |
-| Mexican | Steak Torta | 6,821.55 |
-| Mexican | Chicken Burrito | 5,892.25 |
-| Mexican | Steak Burrito | 5,292.30 |
+| American | Cheeseburger | $8,132.85 |
+| American | Hamburger | $8,054.90 |
+| American | French Fries | $3,997.00 |
+| Asian | Korean Beef Bowl | $10,554.60 |
+| Asian | Tofu Pad Thai | $8,149.00 |
+| Asian | Orange Chicken | $7,524.00 |
+| Italian | Spaghetti & Meatballs | $8,436.50 |
+| Italian | Eggplant Parmesan | $7,119.00 |
+| Italian | Chicken Parmesan | $6,533.80 |
+| Mexican | Steak Torta | $6,821.55 |
+| Mexican | Chicken Burrito | $5,892.25 |
+| Mexican | Steak Burrito | $5,292.30 |
 
-**Insight:** Korean Beef Bowl is the highest-revenue dish in the menu. The American category also shows an interesting difference between popularity and revenue: Hamburger is ordered more frequently, while Cheeseburger generates more revenue because of its higher price.
+Korean Beef Bowl is the highest-revenue dish in the menu. The American category also shows an interesting difference between popularity and revenue: Hamburger is ordered more frequently, while Cheeseburger generates more revenue because of its higher price.
 
-### 2. Customer Ordering Behavior
+### 2. Orders
 
 **Order Overview**
 
-|Metric|Value|
+| Metric | Value |
 |---|---|
-|Total Orders | 5,370 |
-|Total Items Sold | 12,097 |
-|Average Items per Order | 2.3 |
-|Average Order Value | $29.80 |
-|Largest Order | 14 items |
-|Orders with 12+ Items | 20 |
-
+| Total orders | 5,370 |
+| Total items sold | 12,097 |
+| Average items per order | 2.3 |
+| Average order value | $29.80 |
+| Largest order | 14 items |
+| Orders with 12 or more items | 20 |
 
 **Order size distribution**
 
-| size | orders | share |
+| Size | Orders | Share |
 |---|---|---|
-| Small (1-3 items) | 4,486 | 83.5% 
-| Medium (4-8 items) | 797 | 14.8%
-| Large (9+ items) | 87 | 1.6%
+| Small (1–3 items) | 4,486 | 83.5% |
+| Medium (4–8 items) | 797 | 14.8% |
+| Large (9+ items) | 87 | 1.6% |
 
-**Insight:** The vast majority of orders contain only 1–3 items. This represents a potential opportunity to increase average order value through combo meals, side-dish recommendations, drink add-ons or dessert promotions.
+The vast majority of orders contain only 1–3 items. This represents a potential opportunity to increase average order value through combo meals, side-dish recommendations, drink add-ons or dessert promotions.
 
-### 3. Revenue Performance
-
-**Highest-Value Orders**
-
-| order_id | total | 
-|---|---|
-| 440 | 192.15|
-| 2075 | 191.05 |
-| 1957 | 190.10 |
-| 330  | 189.70 |
-| 2675 | 185.10 |
-
-**Insight:** The highest-value order was $192.15 and contained 14 items, including 8 Italian dishes.
+### 3. Revenue
 
 **Monthly revenue**
 
-| month | revenue | previous_month | change | running_total |
-|---|---|---|---| ---|
-| January | 53,816.95 | - | - | 53,816.95 |
-| February | 50,790.35 | 53,816.95 | -3,026.60 (-5.6%) | 104,607.30 |
-| March | 54,610.60	 | 	50,790.35 | 	+3,820.25 (+7.5%) | 159,217.90 |
+| Month | Revenue | Change from last month | Running total |
+|---|---|---|---|
+| January | $53,816.95 | – | $53,816.95 |
+| February | $50,790.35 | -$3,026.60 (-5.6%) | $104,607.30 |
+| March | $54,610.60 | +$3,820.25 (+7.5%) | $159,217.90 |
 
-**Insight:** February generated the lowest revenue, while March was the strongest month. The February decline is partly explained by the shorter month. 
-
+February generated the lowest revenue, while March was the strongest month. The February decline is partly explained by the shorter month. 
 
 **Revenue share by category**
 
-| category | share_of_revenue |
+| Category | Share |
 |---|---|
 | Italian | 31.1% |
 | Asian | 29.3% |
 | Mexican | 21.9% |
 | American | 17.7% |
 
-**Insight:** Italian and Asian dishes bring in 60.4% of revenue. American dishes are among the most popular by order volume, but their lower prices mean they contribute the smallest share of revenue.
+Italian and Asian dishes bring in 60.4% of revenue. American dishes are among the most popular by order volume, but their lower prices mean they contribute the smallest share of revenue.
+
+**Highest-Value Orders**
+
+| Order ID | Total |
+|---|---|
+| 440 | $192.15 |
+| 2075 | $191.05 |
+| 1957 | $190.10 |
+| 330 | $189.70 |
+| 2675 | $185.10 |
+
+The highest-value order was $192.15 and contained 14 items, including 8 Italian dishes.
 
 ### 4. Demand & Time Analysis
 
-**Busiest Ordering Hours** 
+**Busiest Ordering Hours**
 
-| hour | orders |
+| Hour | Orders |
 |---|---|
 | 12:00 | 647 |
 | 17:00 | 623 |
@@ -218,7 +216,7 @@ The restaurant offers 32 dishes across 4 categories
 
 **Orders by weekday**
 
-| weekday | orders |
+| Weekday | Orders |
 |---|---|
 | Monday | 885 |
 | Sunday | 796 |
@@ -228,28 +226,26 @@ The restaurant offers 32 dishes across 4 categories
 | Saturday | 711 |
 | Wednesday | 682 |
 
+Lunch (12:00-13:00) accounts for 23% of orders and dinner (17:00-19:00) for 32%. Orders after 22:00 are very rare. Monday is the busiest weekday with 885 orders, while Wednesday has the lowest demand with 682 orders.
 
-**Insight:** Lunch (12:00-13:00) accounts for 23% of orders and dinner (17:00-19:00) for 32%. Orders after 22:00 are very rare. Monday is the busiest weekday with 885 orders, while Wednesday has the lowest demand with 682 orders.
 
 ## Power BI Dashboard
 
-An interactive two-page dashboard built on the same data as the SQL analysis.
-
-![Overview](Dashboard/dashboard_overview.png)
+The dashboard uses the same data as the SQL analysis. It consists of two pages, providing an overview of sales performance and a closer look at ordering patterns.
 
 **Overview** shows revenue, orders, items sold and average order value, with revenue by month and category and the top 10 dishes by items sold and by revenue.
 
-![Time patterns](Dashboard/dashboard_time.png)
+![Overview](Dashboard/dashboard_overview.png)
 
-**Time patterns** shows orders by hour and by weekday, plus a heatmap of hour × weekday. The busiest slot is Sunday at 13:00 with 116 orders.
+**Time patterns** shows orders by hour and by weekday, and a heatmap of hour × weekday.  
+
+![Time patterns](Dashboard/dashboard_time.png)
 
 Month and category slicers filter both pages.
 
-### Data Model
+**Data model:** `menu_items` (one) is connected to `order_details` (many) with `menu_item_id` = `item_id`.
 
-`menu_items` (one) is connected to `order_details` (many) through `menu_item_id` = `item_id`.
-
-### DAX Measures
+**DAX measures:**
 
 ```
 Revenue = SUMX(order_details, RELATED(menu_items[price]))
@@ -263,72 +259,53 @@ Orders With Items =
 Avg Order Value = DIVIDE([Revenue], [Orders With Items])
 ```
 
-Average order value uses only orders that contain at least one valid item.
+Average order value only counts orders that have at least one item.
 
-Files are in the `Dashboard/` folder: `restaurant_dashboard.pbix` (open with Power BI Desktop) and screenshots.
+## Challenges
+
+**Rows with no item.** Some rows in `order_details` have an empty `item_id`, so they cannot be matched to a menu item or a price. I excluded these rows from item counts and revenue calculations. In Power BI, I created a separate `Orders With Items` measure to count only orders containing valid items when calculating the average order value.
 
 ## Recommendations
 
-Based on the analysis, I would recommend four actions.
+**1. Promote Italian and Asian dishes**
+They bring in 60.4% of revenue. The restaurant could give them more space on the menu and push the best sellers: Korean Beef Bowl, Spaghetti & Meatballs and Tofu Pad Thai.
 
-**1. Promote high-revenue categories**
+**2. Look at weak dishes**
+Chicken Tacos had only 123 orders. The restaurant could try a new price, a new recipe, a better place on the menu or a special offer. If nothing helps, it could replace the dish.
 
-Italian and Asian dishes generate 60.4% of revenue.
+**3. Raise the average order value**
+Since 83.5% of orders have only 1–3 items, the restaurant could offer combo meals, main + side bundles, drinks and desserts.
 
-The restaurant could give these categories more visibility on the menu and promote high-performing dishes such as:
+**4. Plan staff around busy times**
+Add more staff at 12:00–13:00 and 17:00–19:00. Monday may also need extra staff because it has the most orders.
 
-- Korean Beef Bowl
-- Spaghetti & Meatballs
-- Tofu Pad Thai
+## Project Structure
 
-**2. Review underperforming dishes**
+```
+restaurant-orders-analysis/
+├── Dashboard/
+│   ├── restaurant_dashboard.pbix
+│   ├── dashboard_overview.png
+│   └── dashboard_time.png
+├── restaurant_analysis.sql
+└── README.md
+```
 
-Chicken Tacos received only 123 orders, significantly below the top-performing dishes.
+## How to Run It
 
-The restaurant could test:
-
-- a different price
-- recipe changes
-- improved menu positioning
-- promotional offers
-
-If performance does not improve, the dish could be considered for replacement.
-
-**3. Increase average order value**
-
-With 83.5% of orders containing only 1–3 items, there is an opportunity to encourage customers to add more items.
-
-Possible strategies:
-- combo meals
-- side + main bundles
-- drink add-ons
-- dessert recommendations
-
-**4. Optimize staffing**
-
-More staff should be scheduled during the busiest periods:
-- 12:00–13:00
-- 17:00–19:00
-
-Monday may also require additional staffing because it has the highest weekly order volume.
-
-## How to Reproduce
-
-1. Download the [Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) dataset from Maven Analytics Data Playground.
-2. Create the database tables by running `create_restaurant_db.sql`.
-3. Run the analysis in `restaurant_analysis.sql`.
-4. Open `Dashboard/restaurant_dashboard.pbix` in Power BI Desktop.
+1. Download the [Restaurant Orders](https://mavenanalytics.io/data-playground/restaurant-orders) dataset from Maven Analytics.
+2. Open SQL Server Management Studio and run `create_restaurant_db.sql` to create the database and load the data.
+3. Run `restaurant_analysis.sql` to get the SQL results.
+4. Open `Dashboard/restaurant_dashboard.pbix` in Power BI Desktop to explore the dashboard.
 
 
 ## Conclusion
 
-The analysis shows that the restaurant's revenue is primarily driven by Italian and Asian dishes, while American dishes generate high order volume at lower prices.
+This project gave me practical experience in using SQL to analyse sales data and Power BI to communicate the results visually. It helped me practise aggregations, joins, CTEs, window functions, data modelling and DAX measures while exploring menu performance and customer ordering patterns.
 
-Customer orders are generally small, with 83.5% containing 1–3 items, creating an opportunity to increase average order value through bundles and add-ons.
 
-Demand is concentrated around lunch and dinner, particularly between 12:00–13:00 and 17:00–19:00, which provides a clear opportunity to optimize staffing.
 
-Together, the SQL analysis and the Power BI dashboard turn raw order data into clear recommendations on menu focus, order value and staffing.
+
 
 
 
